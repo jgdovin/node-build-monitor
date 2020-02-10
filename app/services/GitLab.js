@@ -83,25 +83,47 @@ module.exports = function () {
                     callback(err);
                     return;
                 }
-                callback(err, flatten(builds));
+                if (self.config.oneBuildPerBranch) {
+                  const allBranches = {};
+                  const allBuilds = flatten(builds);
+                  const newBuilds = allBuilds.filter(item => {
+                    const buildId = item.id.split('|')[1];
+                    if (allBranches[item.branch] > buildId) {
+                      return false;
+                    } else {
+                      allBranches[item.branch] = buildId;
+                      return true;
+                    }
+                  });
+                  callback(err, newBuilds);
+                } else {
+                  callback(err, flatten(builds));
+                }
+                
             });
         },
         simplifyBuild = function(project, build) {
+            const runningJob = build.jobs.find(e => e.status === 'running');
+            // if (build.ref === 'formulas-set-values') {
+            //   console.log(runningJob);
+            // }
             return {
                 id: project.id + '|' + build.id,
                 number: build.id,
                 project: project.name + '/' + build.ref,
                 branch: build.ref,
+                currentJob: runningJob || {},
                 commit: build.sha ? build.sha.substr(0, 7) : undefined,
                 isRunning: ['running', 'pending'].includes(build.status),
+                isManual: build.status === 'manual',
                 startedAt: getDateTime(build.started_at),
-                finishedAt: getDateTime(build.finished_at),
+                finishedAt: build.finished_at ? getDateTime(build.finished_at) : '',
                 requestedFor: getAuthor(build),
                 status: getBuildStatus(build.status, build.jobs),
                 statusText: build.status,
                 reason: getCommitMessage(build),
-                hasErrors: false,
-                hasWarnings: false,
+                hasErrors: build.status === 'failed',
+                hasWarnings: ['manual', 'canceled', 'skipped', 'pending'].includes(build.status),
                 url: getBuildUrl(project, build)
             };
         },
@@ -127,7 +149,7 @@ module.exports = function () {
                 case 'success':
                     return 'Green';
                 case 'manual':
-                    return getStatusForManual(jobs);
+                    return 'Gray';
                 default:
                     return 'Gray';
             }

@@ -1,22 +1,27 @@
 {
   "monitor": {
-    "interval": 5000,
-    "numberOfBuilds": 12,
+    "interval": 60000,
+    "numberOfBuilds": 30,
     "latestBuildOnly": false,
     "sortOrder": "date",
     "debug": true
   },
   "services": [
     {
-      "name": "Travis",
+      "name": "GitLab",
       "configuration": {
-        "slug": "marcells/bloggy"
-      }
-    },
-    {
-      "name": "Travis",
-      "configuration": {
-        "slug": "marcells/node-build-monitor"
+        "url": "https://git.jpg.com",
+        "token": "TOKEN",
+        "numberOfPipelinesPerProject": 30,
+        "oneBuildPerBranch": true,
+        "pipeline": {
+          "status": ["running", "pending", "success", "failed", "canceled", "skipped", "manual"]
+        },
+        "slugs": [
+          {
+            "project": "prizmdoc/cells/predx"
+          }
+        ]
       }
     }
   ]

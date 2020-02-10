@@ -76,8 +76,8 @@
 
 .stoplight .flex-item .project {
   color: #DDDDDD;
-  font-size: 16pt;
-  font-weight: normal;
+  font-size: 30pt;
+  font-weight: bold;
 }
 
 .stoplight .flex-item .project-definition-separator {
@@ -102,7 +102,7 @@
 .stoplight .flex-item .duration-block {
   color: #999999;
   float: right;
-  font-size: 10pt;
+  font-size: 15pt;
 }
 
 .stoplight .flex-item .duration-icon {
@@ -110,8 +110,9 @@
 }
 
 .stoplight .flex-item .time {
-  color: #AAAAAA;
+  color: #FFFFFF;
   margin-left: 10px;
+  font-weight: bold;
 }
 
 .stoplight .flex-item .status {
@@ -142,6 +143,10 @@
   font-size: 15pt;
   float: left;
   vertical-align: middle;
+  width:95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
 }
 
 .stoplight .flex-item .warnings {
@@ -153,34 +158,4 @@
 
 .stoplight .prio-vertical-one {
   margin-top: 15px;
-}
-
-@media (max-height: 600px) {
-  .stoplight .prio-vertical-one {
-    display: none;
-  }
-}
-
-@media (max-height: 760px) {
-  .stoplight .prio-vertical-two {
-    display: none;
-  }
-}
-
-@media (max-height: 900px) {
-  .stoplight .prio-vertical-three {
-    display: none;
-  }
-}
-
-@media (max-width: 870px) {
-  .stoplight .prio-horizontal-one {
-    display: none;
-  }
-}
-
-@media (max-width: 1000px) {
-  .stoplight .prio-horizontal-two {
-    display: none;
-  }
 }
